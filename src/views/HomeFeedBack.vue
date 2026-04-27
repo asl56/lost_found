@@ -1,8 +1,14 @@
 <!-- 留言视图 -->
 <template>
-    <div class="HomeFeedBack" style="margin: 0;">
-        <div id="HomeFeedBack" style="width: 100%;height: 300px;"></div>
-    </div>
+  <div
+    class="HomeFeedBack"
+    style="margin: 0;"
+  >
+    <div
+      id="HomeFeedBack"
+      style="width: 100%;height: 300px;"
+    />
+  </div>
 </template>
 
 <script>
@@ -24,7 +30,6 @@ export default {
         // 初始化数据
         getData() {
             axios.get("/main/getData").then(res => {
-                console.log(res, 'data')
                 this.dateList = res.data.data;
                 this.dataList = res.data.data2
                 this.init(this.dateList, this.dataList)

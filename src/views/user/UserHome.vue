@@ -1,131 +1,333 @@
 <template>
-    <div>
-
-        <div style="width: 95%;margin: 0 auto;">
-            <el-carousel height="400px">
-                <el-carousel-item v-for="item in imageList" :key="item" :loop="true">
-
-                    <img src="../../assets/img/1.jpg" alt="image" style="height: 100%;width: 100%;">
-
-                </el-carousel-item>
-            </el-carousel>
-        </div>
-        <!-- 公告 -->
-        <div class="userHome_Notice">
-            <span class="el-icon-bell" style="position: absolute ;left: 0; top: 4px;"></span>
-            <marquee behavior="scroll" direction="left" style="position: absolute ;left: 17px;">
-                <span>{{ notice.title }}</span>
-            </marquee>
-        </div>
-        <el-divider></el-divider>
-
-        <div style="margin: 20px 35px 0;display: flex; justify-content: space-between;">
-            <div>
-                <el-card class="box-card" shadow="hover">
-                    <div slot="header" class="clearfix">
-                        <h3 style="float: left;">失物中心</h3>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="handleLost">前往<i
-                                class="el-icon-arrow-right"></i></el-button>
-                    </div>
-                    <div class="text item" style="display: flex;justify-content: space-between;flex-wrap: wrap;">
-                        <el-card :body-style="{ padding: '0px' }" style="width: 48%;" shadow="hover"
-                            v-for="(item, index) in LostList" :key="index">
-                            <img :src="item.itemPhoto" class="image">
-                            <div style="padding: 14px;">
-                                <span>{{ item.title }}</span>
-                                <p style="color: #aaa;">{{ item.releaseDate }}</p>
-                                <div class="bottom clearfix">
-                                    <el-button type="text" class="button" style="float: left ;margin-left: 20px;"
-                                        @click="handelView(item)">详情</el-button>
-                                    <el-button type="text" class="button" style="margin-right: 20px;"
-                                        @click="showContact(item.id)">留言</el-button>
-                                </div>
-                            </div>
-                        </el-card>
-                    </div>
-                </el-card>
-            </div>
-            <div>
-                <el-card class="box-card" shadow="hover">
-                    <div slot="header" class="clearfix">
-                        <h3 style="float: left;">招领中心</h3>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="handleFound">前往<i
-                                class="el-icon-arrow-right"></i></el-button>
-                    </div>
-                    <div class="text item" style="display: flex;justify-content: space-between;flex-wrap: wrap;">
-                        <el-card :body-style="{ padding: '0px' }" style="width: 48%;" shadow="hover"
-                            v-for="(item, index) in foundList" :key="index">
-                            <img :src="item.itemPhoto" class="image">
-                            <div style="padding: 14px;">
-                                <span>{{ item.title }}</span>
-                                <p style="color: #aaa;">{{ item.releaseDate }}</p>
-                                <div class="bottom clearfix">
-                                    <el-button type="text" class="button" style="float: left ;margin-left: 20px;"
-                                        @click="handelFoundView(item)">详情</el-button>
-                                    <el-button type="text" class="button" style="margin-right: 20px;"
-                                        @click="showFoundContact(item.id)">留言</el-button>
-                                </div>
-                            </div>
-                        </el-card>
-                    </div>
-                </el-card>
-            </div>
-        </div>
-        <el-dialog title="详细信息" :visible.sync="dialogShowView" width="500px">
-            <el-form :model="showView" style="margin: 0;">
-                <el-form-item label="物品图片" :label-width="formLabelWidth">
-
-                    <img :src="showView.itemPhoto" class="avatar">
-
-                </el-form-item>
-
-                <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
-                    <el-input v-model="showView.title" autocomplete="off" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="描述" :label-width="formLabelWidth" prop="description">
-                    <el-input v-model="showView.description" type="textarea" autocomplete="off"
-                        :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="联系方式" :label-width="formLabelWidth" prop="phone">
-                    <el-input v-model="showView.phone" autocomplete="off" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="showView.name" autocomplete="off" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="创建时间" :label-width="formLabelWidth" prop="phone">
-                    <el-input v-model="showView.releaseDate" autocomplete="off" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="状态" :label-width="formLabelWidth" prop="phone">
-                    <el-input v-model="showView.status" autocomplete="off" :disabled="true"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogShowView = false">确 定</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog title="留言" :visible.sync="dialogFormVisible" @close="handleClose()">
-            <el-form>
-                <el-form-item label="内容" :label-width="formLabelWidth">
-                    <el-input v-model="content" type="textarea" autosize autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="addContact">确 定</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog title="留言" :visible.sync="FoundDialogFormVisible" @close="handleClose()">
-            <el-form>
-                <el-form-item label="内容" :label-width="formLabelWidth">
-                    <el-input v-model="content" type="textarea" autosize autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="FoundDialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="addFoundContact">确 定</el-button>
-            </div>
-        </el-dialog>
+  <div>
+    <div style="width: 95%;margin: 0 auto;">
+      <el-carousel height="400px">
+        <el-carousel-item
+          v-for="item in imageList"
+          :key="item"
+          :loop="true"
+        >
+          <img
+            src="../../assets/img/1.jpg"
+            alt="image"
+            style="height: 100%;width: 100%;"
+          >
+        </el-carousel-item>
+      </el-carousel>
     </div>
+    <!-- 公告 -->
+    <div class="userHome_Notice">
+      <span
+        class="el-icon-bell"
+        style="position: absolute ;left: 0; top: 4px;"
+      />
+      <marquee
+        behavior="scroll"
+        direction="left"
+        style="position: absolute ;left: 17px;"
+      >
+        <span>{{ notice.title }}</span>
+      </marquee>
+    </div>
+    <el-divider />
+
+    <div style="margin: 20px 35px 0;display: flex; justify-content: space-between;">
+      <div>
+        <el-card
+          class="box-card"
+          shadow="hover"
+        >
+          <div
+            slot="header"
+            class="clearfix"
+          >
+            <h3 style="float: left;">
+              失物中心
+            </h3>
+            <el-button
+              style="float: right; padding: 3px 0"
+              type="text"
+              @click="handleLost"
+            >
+              前往<i
+                class="el-icon-arrow-right"
+              />
+            </el-button>
+          </div>
+          <div
+            class="text item"
+            style="display: flex;justify-content: space-between;flex-wrap: wrap;"
+          >
+            <el-card
+              v-for="(item, index) in LostList"
+              :key="index"
+              :body-style="{ padding: '0px' }"
+              style="width: 48%;"
+              shadow="hover"
+            >
+              <img
+                :src="item.itemPhoto"
+                class="image"
+              >
+              <div style="padding: 14px;">
+                <span>{{ item.title }}</span>
+                <p style="color: #aaa;">
+                  {{ item.releaseDate }}
+                </p>
+                <div class="bottom clearfix">
+                  <el-button
+                    type="text"
+                    class="button"
+                    style="float: left ;margin-left: 20px;"
+                    @click="handelView(item)"
+                  >
+                    详情
+                  </el-button>
+                  <el-button
+                    type="text"
+                    class="button"
+                    style="margin-right: 20px;"
+                    @click="showContact(item.id)"
+                  >
+                    留言
+                  </el-button>
+                </div>
+              </div>
+            </el-card>
+          </div>
+        </el-card>
+      </div>
+      <div>
+        <el-card
+          class="box-card"
+          shadow="hover"
+        >
+          <div
+            slot="header"
+            class="clearfix"
+          >
+            <h3 style="float: left;">
+              招领中心
+            </h3>
+            <el-button
+              style="float: right; padding: 3px 0"
+              type="text"
+              @click="handleFound"
+            >
+              前往<i
+                class="el-icon-arrow-right"
+              />
+            </el-button>
+          </div>
+          <div
+            class="text item"
+            style="display: flex;justify-content: space-between;flex-wrap: wrap;"
+          >
+            <el-card
+              v-for="(item, index) in foundList"
+              :key="index"
+              :body-style="{ padding: '0px' }"
+              style="width: 48%;"
+              shadow="hover"
+            >
+              <img
+                :src="item.itemPhoto"
+                class="image"
+              >
+              <div style="padding: 14px;">
+                <span>{{ item.title }}</span>
+                <p style="color: #aaa;">
+                  {{ item.releaseDate }}
+                </p>
+                <div class="bottom clearfix">
+                  <el-button
+                    type="text"
+                    class="button"
+                    style="float: left ;margin-left: 20px;"
+                    @click="handelFoundView(item)"
+                  >
+                    详情
+                  </el-button>
+                  <el-button
+                    type="text"
+                    class="button"
+                    style="margin-right: 20px;"
+                    @click="showFoundContact(item.id)"
+                  >
+                    留言
+                  </el-button>
+                </div>
+              </div>
+            </el-card>
+          </div>
+        </el-card>
+      </div>
+    </div>
+    <el-dialog
+      title="详细信息"
+      :visible.sync="dialogShowView"
+      width="500px"
+    >
+      <el-form
+        :model="showView"
+        style="margin: 0;"
+      >
+        <el-form-item
+          label="物品图片"
+          :label-width="formLabelWidth"
+        >
+          <img
+            :src="showView.itemPhoto"
+            class="avatar"
+          >
+        </el-form-item>
+
+        <el-form-item
+          label="标题"
+          :label-width="formLabelWidth"
+          prop="title"
+        >
+          <el-input
+            v-model="showView.title"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="描述"
+          :label-width="formLabelWidth"
+          prop="description"
+        >
+          <el-input
+            v-model="showView.description"
+            type="textarea"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="联系方式"
+          :label-width="formLabelWidth"
+          prop="phone"
+        >
+          <el-input
+            v-model="showView.phone"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="创建人"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="showView.name"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="创建时间"
+          :label-width="formLabelWidth"
+          prop="phone"
+        >
+          <el-input
+            v-model="showView.releaseDate"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="状态"
+          :label-width="formLabelWidth"
+          prop="phone"
+        >
+          <el-input
+            v-model="showView.status"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogShowView = false"
+        >
+          确 定
+        </el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="留言"
+      :visible.sync="dialogFormVisible"
+      @close="handleClose()"
+    >
+      <el-form>
+        <el-form-item
+          label="内容"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="content"
+            type="textarea"
+            autosize
+            autocomplete="off"
+          />
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="dialogFormVisible = false">
+          取 消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="addContact"
+        >
+          确 定
+        </el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="留言"
+      :visible.sync="FoundDialogFormVisible"
+      @close="handleClose()"
+    >
+      <el-form>
+        <el-form-item
+          label="内容"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="content"
+            type="textarea"
+            autosize
+            autocomplete="off"
+          />
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="FoundDialogFormVisible = false">
+          取 消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="addFoundContact"
+        >
+          确 定
+        </el-button>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -183,7 +385,7 @@ export default {
             this.data.content = this.content
             axios.post("/main/addContact", JSON.stringify(this.data), {
                 headers: { 'Content-Type': 'application/json' }
-            }).then(res => {
+            }).then(() => {
                 this.$notify({
                     title: '成功',
                     message: '留言成功',
@@ -198,7 +400,7 @@ export default {
             this.data.content = this.content
             axios.post("/main/addContact", JSON.stringify(this.data), {
                 headers: { 'Content-Type': 'application/json' }
-            }).then(res => {
+            }).then(() => {
                 this.$notify({
                     title: '成功',
                     message: '留言成功',

@@ -21,6 +21,9 @@ import MyFound from '@/views/user/MyFound.vue'
 import MyContact from '@/views/user/MyContact.vue'
 import ContactMe from '@/views/user/ContactMe.vue'
 import AdminVerify from '@/views/AdminVerify.vue'
+import NotFound from '@/views/errors/NotFound.vue'
+import Forbidden from '@/views/errors/Forbidden.vue'
+import ServerError from '@/views/errors/ServerError.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -62,9 +65,27 @@ const routes = [
       { path: 'AdminFeedBack', name: 'feedback', component: AdminFeedBack },
       { path: 'AdminManage', name: 'manage', component: AdminManage },
       { path: 'UserManage', name: 'userManage', component: UserManage },
-      { path: 'UserManage', name: 'userManage', component: UserManage },
       { path: 'AdminVerify', name: 'AdminVerify', component: AdminVerify },
     ]
+  },
+  {
+    path: '/403',
+    name: 'Forbidden',
+    component: Forbidden
+  },
+  {
+    path: '/500',
+    name: 'ServerError',
+    component: ServerError
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: NotFound
+  },
+  {
+    path: '*',
+    redirect: '/404'
   }
 ]
 
@@ -72,6 +93,29 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+const adminRoutePrefix = '/AdminIndex'
+
+router.beforeEach((to, from, next) => {
+  if (to.path === '/') {
+    next()
+    return
+  }
+
+  const token = localStorage.getItem('jwt')
+  const role = localStorage.getItem('role')
+  if (!token) {
+    next('/')
+    return
+  }
+
+  if (to.path.startsWith(adminRoutePrefix) && role !== '管理员') {
+    next('/403')
+    return
+  }
+
+  next()
 })
 
 export default router

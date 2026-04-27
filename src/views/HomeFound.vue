@@ -1,8 +1,14 @@
 <!-- 招领视图 -->
 <template>
-    <div class="HomeFound" style="margin: 0;">
-        <div id="HomeFound" style="width: 100%;height: 300px;"></div>
-    </div>
+  <div
+    class="HomeFound"
+    style="margin: 0;"
+  >
+    <div
+      id="HomeFound"
+      style="width: 100%;height: 300px;"
+    />
+  </div>
 </template>
 
 <script>
@@ -24,7 +30,6 @@ export default {
         // 初始化数据
         getData() {
             axios.get("/main/getFoundData").then(res => {
-                console.log(res, 'Found')
                 // this.dateList = res.data.data;
                 // this.dataList = res.data.data2
                 this.init(res.data.data)

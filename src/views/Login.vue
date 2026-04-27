@@ -1,77 +1,168 @@
 <template>
-    <div>
-        <div class="login_box">
-            <div class="login_left">
-                <img src="../assets/img/LostLogo.png" class="login_logo">
-                <img src="../assets/img/login1.gif" style="height: 100%;width: 100%;">
-            </div>
-            <div class="login_right">
-                <p class="login_title">失物招领系统</p>
-                <el-tabs v-model="activeName" @tab-click="handleClick" style="width: 300px;margin: 20px auto;">
-                    <el-tab-pane label="登 录" name="first">
-                        <el-form :label-position="labelPosition" :model="formLabelAlign" :rules="rules"
-                            style="width: 300px;margin: 20px 0;">
-                            <el-form-item prop="userName">
-                                <el-input v-model="formLabelAlign.userName" prefix-icon="el-icon-user"
-                                    placeholder="请输入账号" clearable></el-input>
-                            </el-form-item>
-                            <el-form-item prop="password">
-                                <el-input v-model="formLabelAlign.password" prefix-icon="el-icon-key"
-                                    placeholder="请输入密码" show-password clearable></el-input>
-                            </el-form-item>
-                            <el-checkbox v-model="checked" label="记住密码"
-                                style="float: left;margin-bottom: 10px;"></el-checkbox>
-                            <el-link type="primary" style="float: right;" :underline="false"
-                                @click="activeName = 'second'">注 册</el-link>
-                            <Vcode :show="isShow" @success="success" @close="close" />
-                            <el-button type="primary" style="width:300px;" @click.prevent="isShow = true">登录</el-button>
-                        </el-form>
-                    </el-tab-pane>
-                    <el-tab-pane label="注 册" name="second">
-                        <el-form :label-position="labelPosition" :model="registerForm" :rules="rules"
-                            style="width: 300px;margin: 20px 0;" ref="registerForm">
-                            <el-form-item prop="userName">
-                                <el-input v-model="registerForm.userName" prefix-icon="el-icon-user"
-                                    placeholder="请输入账号/用户名" clearable></el-input>
-                            </el-form-item>
-                            <el-form-item prop="password">
-                                <el-input v-model="registerForm.password" prefix-icon="el-icon-key" placeholder="请输入密码"
-                                    show-password clearable></el-input>
-                            </el-form-item>
-                            <el-form-item prop="name">
-                                <el-input v-model="registerForm.name" prefix-icon="el-icon-user" placeholder="请输入姓名"
-                                    clearable></el-input>
-                            </el-form-item>
-                            <el-form-item prop="email">
-                                <el-input v-model="registerForm.email" prefix-icon="el-icon-message" placeholder="请输入邮箱"
-                                    clearable></el-input>
-                            </el-form-item>
-                            <el-form-item prop="captcha">
-                                <el-input v-model="registerForm.captcha" prefix-icon="el-icon-document-checked"
-                                    placeholder="请输入验证码" clearable style="width: 150px;float: left;"></el-input>
-                                <el-popconfirm title="您的邮箱将会收到一封带有验证码的邮件" @confirm="handleCaptcha()" ref="captchaConfirm" :disabled="disabled">
-                                    <el-link type="primary" :underline="false" slot="reference" ref="captchaConfirm" :disabled="disabled"
-                                        id="count">获取验证码</el-link>
-
-                                </el-popconfirm>
-
-                            </el-form-item>
-                            <el-button type="primary" style="width:300px;"
-                                @click="handleRegister('registerForm')">注册</el-button>
-                        </el-form>
-                    </el-tab-pane>
-
-                </el-tabs>
-
-            </div>
-        </div>
+  <div>
+    <div class="login_box">
+      <div class="login_left">
+        <img
+          src="../assets/img/LostLogo.png"
+          class="login_logo"
+        >
+        <img
+          src="../assets/img/login1.gif"
+          style="height: 100%;width: 100%;"
+        >
+      </div>
+      <div class="login_right">
+        <p class="login_title">
+          失物招领系统
+        </p>
+        <el-tabs
+          v-model="activeName"
+          style="width: 300px;margin: 20px auto;"
+          @tab-click="handleClick"
+        >
+          <el-tab-pane
+            label="登 录"
+            name="first"
+          >
+            <el-form
+              :label-position="labelPosition"
+              :model="formLabelAlign"
+              :rules="rules"
+              style="width: 300px;margin: 20px 0;"
+            >
+              <el-form-item prop="userName">
+                <el-input
+                  v-model="formLabelAlign.userName"
+                  prefix-icon="el-icon-user"
+                  placeholder="请输入账号"
+                  clearable
+                />
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input
+                  v-model="formLabelAlign.password"
+                  prefix-icon="el-icon-key"
+                  placeholder="请输入密码"
+                  show-password
+                  clearable
+                />
+              </el-form-item>
+              <el-checkbox
+                v-model="checked"
+                label="记住密码"
+                style="float: left;margin-bottom: 10px;"
+              />
+              <el-link
+                type="primary"
+                style="float: right;"
+                :underline="false"
+                @click="activeName = 'second'"
+              >
+                注 册
+              </el-link>
+              <Vcode
+                :show="isShow"
+                @success="success"
+                @close="close"
+              />
+              <el-button
+                type="primary"
+                style="width:300px;"
+                @click.prevent="isShow = true"
+              >
+                登录
+              </el-button>
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane
+            label="注 册"
+            name="second"
+          >
+            <el-form
+              ref="registerForm"
+              :label-position="labelPosition"
+              :model="registerForm"
+              :rules="rules"
+              style="width: 300px;margin: 20px 0;"
+            >
+              <el-form-item prop="userName">
+                <el-input
+                  v-model="registerForm.userName"
+                  prefix-icon="el-icon-user"
+                  placeholder="请输入账号/用户名"
+                  clearable
+                />
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input
+                  v-model="registerForm.password"
+                  prefix-icon="el-icon-key"
+                  placeholder="请输入密码"
+                  show-password
+                  clearable
+                />
+              </el-form-item>
+              <el-form-item prop="name">
+                <el-input
+                  v-model="registerForm.name"
+                  prefix-icon="el-icon-user"
+                  placeholder="请输入姓名"
+                  clearable
+                />
+              </el-form-item>
+              <el-form-item prop="email">
+                <el-input
+                  v-model="registerForm.email"
+                  prefix-icon="el-icon-message"
+                  placeholder="请输入邮箱"
+                  clearable
+                />
+              </el-form-item>
+              <el-form-item prop="captcha">
+                <el-input
+                  v-model="registerForm.captcha"
+                  prefix-icon="el-icon-document-checked"
+                  placeholder="请输入验证码"
+                  clearable
+                  style="width: 150px;float: left;"
+                />
+                <el-popconfirm
+                  ref="captchaConfirm"
+                  title="您的邮箱将会收到一封带有验证码的邮件"
+                  :disabled="disabled"
+                  @confirm="handleCaptcha()"
+                >
+                  <el-link
+                    id="count"
+                    slot="reference"
+                    ref="captchaConfirm"
+                    type="primary"
+                    :underline="false"
+                    :disabled="disabled"
+                  >
+                    获取验证码
+                  </el-link>
+                </el-popconfirm>
+              </el-form-item>
+              <el-button
+                type="primary"
+                style="width:300px;"
+                @click="handleRegister('registerForm')"
+              >
+                注册
+              </el-button>
+            </el-form>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 
 import Vcode from "vue-puzzle-vcode";
-import axios from "axios";
+import { getUserByUserName, login, registerUser, sendCaptcha } from "@/api/auth";
 export default {
     components: {
         Vcode
@@ -111,7 +202,7 @@ export default {
                 name: [
                     { required: true, message: '请输入姓名', trigger: 'blur' }
                 ],
-                email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }, { pattern: /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/, message: '邮箱格式不正确', trigger: 'blur' }],
+                email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }, { pattern: /^([a-zA-Z0-9_.+-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/, message: '邮箱格式不正确', trigger: 'blur' }],
 
                 captcha: [{ required: true, message: '请输入验证码', trigger: 'blur' }, { pattern: /^\d{6}$/, message: '验证码格式不正确', trigger: 'blur' }],
             }
@@ -124,14 +215,12 @@ export default {
     methods: {
         time() {
             var count = document.querySelector('#count');
-            console.log(count, 'count')
             this.disabled = true
             var time = 59;
             var timer = setInterval(function () {
                 // 判断剩余秒数
                 if (time == 0) {
                     // 清除定时器和复原按钮
-                    console.log(this.disabled,'1')
                     clearInterval(timer);
                     this.disabled = false
                     count.innerHTML = '<span class="el-link--inner">获取验证码</span>';
@@ -151,10 +240,9 @@ export default {
                     message: '验证码发送中，请稍等',
                     type: 'success'
                 });
-                axios.get("/login/email?email=" + this.registerForm.email).then(res => {
+                sendCaptcha(this.registerForm.email).then(res => {
 
                     this.TrueCaptcha = res.data.data
-                    console.log(this.TrueCaptcha, 'true')
                 })
               
             }
@@ -163,13 +251,9 @@ export default {
             this.$refs[registerForm].validate((valid) => {
                 if (valid) {
                     if (this.registerForm.captcha == this.TrueCaptcha) {
-                        axios.get("/login/getUser?userName=" + this.registerForm.userName).then(res => {
+                        getUserByUserName(this.registerForm.userName).then(res => {
                             if (res.data.data.total == 0) {
-                                axios.post("/login/addUser", JSON.stringify(this.registerForm), {
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    }
-                                }).then(res => {
+                                registerUser(this.registerForm).then(() => {
                                     this.registerForm = {
                                         userName: '',
                                         name: '',
@@ -203,14 +287,14 @@ export default {
 
 
         },
-        handleClick(tab, event) {
+        handleClick() {
         },
         getData() {
             const data = {
                 userName: this.formLabelAlign.userName,
                 password: this.formLabelAlign.password
             }
-            axios.post("/login/userLogin?userName=" + data.userName + "&password=" + data.password).then(res => {
+            login(data.userName, data.password).then(res => {
                 if (res.data.code != 0 && res.data.data2.status != '停用') {
                     this.$message({
                         message: '登录成功',
@@ -233,7 +317,7 @@ export default {
                         duration: 1500
                     });
                 }
-            }).catch(err => {
+            }).catch(() => {
                 this.$message({
                     message: 'error',
                     type: 'error',
@@ -275,8 +359,7 @@ export default {
             this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
         },
         // 用户通过了验证
-        success(msg) {
-            //console.log(msg)
+        success() {
             this.isShow = false; // 通过验证后，需要手动隐藏模态框
             //判断复选框是否被勾选 勾选则调用配置cookie方法
             if (this.checked == true) {

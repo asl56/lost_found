@@ -1,27 +1,34 @@
 <template>
-    <div class="Adminhome">
-        <DataView></DataView>
-        <div style="display: flex;justify-content:space-between">
-            <div class="home_datav">
-                <dv-border-box-7 :color="['#fff', '#ddd']" style="overflow: hidden;">
-                    <Notice></Notice>
-                </dv-border-box-7>
-            </div>
-            <div class="home_datav"><dv-border-box-7 :color="['#fff', '#ddd']">
-                    <HomeFeedBack></HomeFeedBack>
-                </dv-border-box-7></div>
-        </div>
-        <div style="display: flex;justify-content:space-between;margin-top: 20px">
-            <div class="home_datav"><dv-border-box-7 :color="['#fff', '#ddd']">
-                    <HomeLost></HomeLost>
-                </dv-border-box-7></div>
-            <div class="home_datav"><dv-border-box-7 :color="['#fff', '#ddd']">
-                    <HomeFound></HomeFound>
-                </dv-border-box-7></div>
-        </div>
-
-
+  <div class="Adminhome">
+    <DataView />
+    <div style="display: flex;justify-content:space-between">
+      <div class="home_datav">
+        <dv-border-box-7
+          :color="['#fff', '#ddd']"
+          style="overflow: hidden;"
+        >
+          <Notice />
+        </dv-border-box-7>
+      </div>
+      <div class="home_datav">
+        <dv-border-box-7 :color="['#fff', '#ddd']">
+          <HomeFeedBack />
+        </dv-border-box-7>
+      </div>
     </div>
+    <div style="display: flex;justify-content:space-between;margin-top: 20px">
+      <div class="home_datav">
+        <dv-border-box-7 :color="['#fff', '#ddd']">
+          <HomeLost />
+        </dv-border-box-7>
+      </div>
+      <div class="home_datav">
+        <dv-border-box-7 :color="['#fff', '#ddd']">
+          <HomeFound />
+        </dv-border-box-7>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -41,7 +48,6 @@ export default {
     mounted() {
         if (localStorage.getItem('avatar') != null && localStorage.getItem('avatar') != '')
             this.imgUrl = `/main/download?name=${localStorage.getItem('avatar')}`;
-        console.log(this.imgUrl, '1')
     },
 }
 </script>

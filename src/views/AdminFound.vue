@@ -2,164 +2,460 @@
   <div class="AdminFound">
     <div style="margin-bottom: 20px;">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item style="font-weight: bold;">信息管理</el-breadcrumb-item>
+        <el-breadcrumb-item style="font-weight: bold;">
+          信息管理
+        </el-breadcrumb-item>
         <el-breadcrumb-item>招领信息</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="AdminFound_box">
       <div class="AdminFound_Search">
-        <el-form :inline="true" :model="formInline" style="margin: 0px auto;">
+        <el-form
+          :inline="true"
+          :model="formInline"
+          style="margin: 0px auto;"
+        >
           <el-form-item label="标题">
-            <el-input v-model="formInline.title" placeholder="支持模糊查询"></el-input>
+            <el-input
+              v-model="formInline.title"
+              placeholder="支持模糊查询"
+            />
           </el-form-item>
           <el-form-item label="日期">
-            <el-date-picker v-model="formInline.date" value-format="yyyy-MM-dd" type="date" placeholder="选择日期">
-            </el-date-picker>
+            <el-date-picker
+              v-model="formInline.date"
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            />
           </el-form-item>
           <el-form-item label="创建人">
-            <el-select v-model="formInline.name" placeholder="创建人">
-              <el-option :label="item.name" :value="item.id" v-for="(item, index) in nameList" :key="index"></el-option>
-
+            <el-select
+              v-model="formInline.name"
+              placeholder="创建人"
+            >
+              <el-option
+                v-for="(item, index) in nameList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="getData">查询</el-button>
-            <el-button type="info" @click="handleReset">重置</el-button>
+            <el-button
+              type="primary"
+              @click="getData"
+            >
+              查询
+            </el-button>
+            <el-button
+              type="info"
+              @click="handleReset"
+            >
+              重置
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
       <div>
         <div style="text-align: right;width: 90%;margin: 0 auto;">
           <!-- 添加按钮 -->
-          <el-button type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            circle
+            @click="dialogFormVisible = true"
+          />
         </div>
-        <el-table :data="tableData" style="width: 90%;border-radius: 5px;margin: 0 auto;">
-          <el-table-column prop="title" label="物品照片" width="150"
-            style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+        <el-table
+          :data="tableData"
+          style="width: 90%;border-radius: 5px;margin: 0 auto;"
+        >
+          <el-table-column
+            prop="title"
+            label="物品照片"
+            width="150"
+            style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+          >
             <template slot-scope="scope">
-              <el-image style="width: 100px; height: 100px" :src="scope.row.itemPhoto" fit="cover"></el-image>
+              <el-image
+                style="width: 100px; height: 100px"
+                :src="scope.row.itemPhoto"
+                fit="cover"
+              />
             </template>
           </el-table-column>
-          <el-table-column prop="title" label="物品标题" width="250"
-            style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-          </el-table-column>
-          <el-table-column prop="releaseDate" label="创建时间" width="150">
-          </el-table-column>
-          <el-table-column prop="name" label="创建人" width="150">
-          </el-table-column>
-          <el-table-column prop="phone" label="联系方式" width="150">
-          </el-table-column>
-          <el-table-column prop="status" sortable label="状态" width="150">
-          </el-table-column>
-          <el-table-column label="操作" fixed="right" width="250px">
+          <el-table-column
+            prop="title"
+            label="物品标题"
+            width="250"
+            style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+          />
+          <el-table-column
+            prop="releaseDate"
+            label="创建时间"
+            width="150"
+          />
+          <el-table-column
+            prop="name"
+            label="创建人"
+            width="150"
+          />
+          <el-table-column
+            prop="phone"
+            label="联系方式"
+            width="150"
+          />
+          <el-table-column
+            prop="status"
+            sortable
+            label="状态"
+            width="150"
+          />
+          <el-table-column
+            label="操作"
+            fixed="right"
+            width="250px"
+          >
             <template slot-scope="scope">
-              <el-popconfirm confirm-button-text='确定' cancel-button-text='取消' icon="el-icon-info" icon-color="red"
-                title="确定要删除该条失物信息吗？" @confirm="handleDelete(scope.row)">
-                <el-link :underline="false" icon="el-icon-delete" type="danger" slot="reference">删除</el-link>
+              <el-popconfirm
+                confirm-button-text="确定"
+                cancel-button-text="取消"
+                icon="el-icon-info"
+                icon-color="red"
+                title="确定要删除该条失物信息吗？"
+                @confirm="handleDelete(scope.row)"
+              >
+                <el-link
+                  slot="reference"
+                  :underline="false"
+                  icon="el-icon-delete"
+                  type="danger"
+                >
+                  删除
+                </el-link>
               </el-popconfirm>
-              <el-link icon="el-icon-view" :underline="false" type="primary" style="margin:0 20px;"
-                @click="handelView(scope.row)">详情</el-link>
-              <el-link :underline="false" icon="el-icon-edit" type="primary" slot="reference"
-                @click="showEdit(scope.row)">修改</el-link>
+              <el-link
+                icon="el-icon-view"
+                :underline="false"
+                type="primary"
+                style="margin:0 20px;"
+                @click="handelView(scope.row)"
+              >
+                详情
+              </el-link>
+              <el-link
+                slot="reference"
+                :underline="false"
+                icon="el-icon-edit"
+                type="primary"
+                @click="showEdit(scope.row)"
+              >
+                修改
+              </el-link>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-          :page-sizes="[5, 10, 15, 20]" :page-size="page.count" layout="total, sizes, prev, pager, next, jumper"
-          :total="total" class="AdminFound_page">
-        </el-pagination>
+        <el-pagination
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="page.count"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          class="AdminFound_page"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
       </div>
-
     </div>
-    <el-dialog title="添加失物" :visible.sync="dialogFormVisible" width="500px" @close="handleClose">
-      <el-form :model="addForm" :rules="rules" ref="addForm" style="margin: 0;">
-        <el-form-item label="物品图片" :label-width="formLabelWidth" prop="itemPhoto">
-          <el-upload class="avatar-uploader" action="/main/upload" :show-file-list="false"
-            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"
-              style="display: flex;justify-content: center;align-items: center;"></i>
+    <el-dialog
+      title="添加失物"
+      :visible.sync="dialogFormVisible"
+      width="500px"
+      @close="handleClose"
+    >
+      <el-form
+        ref="addForm"
+        :model="addForm"
+        :rules="rules"
+        style="margin: 0;"
+      >
+        <el-form-item
+          label="物品图片"
+          :label-width="formLabelWidth"
+          prop="itemPhoto"
+        >
+          <el-upload
+            class="avatar-uploader"
+            action="/main/upload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              class="avatar"
+            >
+            <i
+              v-else
+              class="el-icon-plus avatar-uploader-icon"
+              style="display: flex;justify-content: center;align-items: center;"
+            />
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
-          <el-input v-model="addForm.title" autocomplete="off"></el-input>
+        <el-form-item
+          label="标题"
+          :label-width="formLabelWidth"
+          prop="title"
+        >
+          <el-input
+            v-model="addForm.title"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="描述" :label-width="formLabelWidth" prop="description">
-          <el-input v-model="addForm.description" type="textarea" autocomplete="off"></el-input>
+        <el-form-item
+          label="描述"
+          :label-width="formLabelWidth"
+          prop="description"
+        >
+          <el-input
+            v-model="addForm.description"
+            type="textarea"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
-          <el-input v-model="addForm.phone" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="handleClose">取 消</el-button>
-        <el-button type="primary" @click="addLost('addForm')">确 定</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog title="详细信息" :visible.sync="dialogShowView" width="500px" @close="handleClose">
-      <el-form :model="showView" style="margin: 0;">
-        <el-form-item label="物品图片" :label-width="formLabelWidth">
-
-          <img :src="showView.itemPhoto" class="avatar">
-
-        </el-form-item>
-
-        <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
-          <el-input v-model="showView.title" autocomplete="off" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="描述" :label-width="formLabelWidth" prop="description">
-          <el-input v-model="showView.description" type="textarea" autocomplete="off" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
-          <el-input v-model="showView.phone" autocomplete="off" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="创建人" :label-width="formLabelWidth">
-          <el-input v-model="showView.name" autocomplete="off" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="创建时间" :label-width="formLabelWidth" prop="phone">
-          <el-input v-model="showView.releaseDate" autocomplete="off" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth" prop="phone">
-          <el-input v-model="showView.status" autocomplete="off" :disabled="true"></el-input>
+        <el-form-item
+          label="手机号"
+          :label-width="formLabelWidth"
+          prop="phone"
+        >
+          <el-input
+            v-model="addForm.phone"
+            autocomplete="off"
+          />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="handleClose">取 消</el-button>
-        <el-button type="primary" @click="handleClose">确 定</el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="handleClose">
+          取 消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="addLost('addForm')"
+        >
+          确 定
+        </el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="详细信息"
+      :visible.sync="dialogShowView"
+      width="500px"
+      @close="handleClose"
+    >
+      <el-form
+        :model="showView"
+        style="margin: 0;"
+      >
+        <el-form-item
+          label="物品图片"
+          :label-width="formLabelWidth"
+        >
+          <img
+            :src="showView.itemPhoto"
+            class="avatar"
+          >
+        </el-form-item>
+
+        <el-form-item
+          label="标题"
+          :label-width="formLabelWidth"
+          prop="title"
+        >
+          <el-input
+            v-model="showView.title"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="描述"
+          :label-width="formLabelWidth"
+          prop="description"
+        >
+          <el-input
+            v-model="showView.description"
+            type="textarea"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="手机号"
+          :label-width="formLabelWidth"
+          prop="phone"
+        >
+          <el-input
+            v-model="showView.phone"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="创建人"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="showView.name"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="创建时间"
+          :label-width="formLabelWidth"
+          prop="phone"
+        >
+          <el-input
+            v-model="showView.releaseDate"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+        <el-form-item
+          label="状态"
+          :label-width="formLabelWidth"
+          prop="phone"
+        >
+          <el-input
+            v-model="showView.status"
+            autocomplete="off"
+            :disabled="true"
+          />
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="handleClose">
+          取 消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="handleClose"
+        >
+          确 定
+        </el-button>
       </div>
     </el-dialog>
 
-    <el-dialog title="修改失物信息" :visible.sync="dialogUpdateForm" width="500px" @close="handleClose">
-      <el-form :model="updateForm" :rules="rules" ref="updateForm" style="margin: 0;">
-        <el-form-item label="物品图片" :label-width="formLabelWidth" prop="ItemPhoto">
-          <el-upload class="avatar-uploader" action="/main/upload" :show-file-list="false"
-            :on-success="handleUpdateSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"
-              style="display: flex;justify-content: center;align-items: center;"></i>
+    <el-dialog
+      title="修改失物信息"
+      :visible.sync="dialogUpdateForm"
+      width="500px"
+      @close="handleClose"
+    >
+      <el-form
+        ref="updateForm"
+        :model="updateForm"
+        :rules="rules"
+        style="margin: 0;"
+      >
+        <el-form-item
+          label="物品图片"
+          :label-width="formLabelWidth"
+          prop="ItemPhoto"
+        >
+          <el-upload
+            class="avatar-uploader"
+            action="/main/upload"
+            :show-file-list="false"
+            :on-success="handleUpdateSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              class="avatar"
+            >
+            <i
+              v-else
+              class="el-icon-plus avatar-uploader-icon"
+              style="display: flex;justify-content: center;align-items: center;"
+            />
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
-          <el-input v-model="updateForm.title" autocomplete="off"></el-input>
+        <el-form-item
+          label="标题"
+          :label-width="formLabelWidth"
+          prop="title"
+        >
+          <el-input
+            v-model="updateForm.title"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="描述" :label-width="formLabelWidth" prop="description">
-          <el-input v-model="updateForm.description" type="textarea" autocomplete="off"></el-input>
+        <el-form-item
+          label="描述"
+          :label-width="formLabelWidth"
+          prop="description"
+        >
+          <el-input
+            v-model="updateForm.description"
+            type="textarea"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
-          <el-input v-model="updateForm.phone" autocomplete="off"></el-input>
+        <el-form-item
+          label="手机号"
+          :label-width="formLabelWidth"
+          prop="phone"
+        >
+          <el-input
+            v-model="updateForm.phone"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth" prop="statusID">
-          <el-select v-model="updateForm.statusID" placeholder="请选择" style="width: 340px;">
-            <el-option v-for="(item, index) in statusList" :key="index" :label="item.status" :value="item.id">
-            </el-option>
+        <el-form-item
+          label="状态"
+          :label-width="formLabelWidth"
+          prop="statusID"
+        >
+          <el-select
+            v-model="updateForm.statusID"
+            placeholder="请选择"
+            style="width: 340px;"
+          >
+            <el-option
+              v-for="(item, index) in statusList"
+              :key="index"
+              :label="item.status"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="handleClose">取 消</el-button>
-        <el-button type="primary" @click="editLost('updateForm')">确 定</el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="handleClose">
+          取 消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="editLost('updateForm')"
+        >
+          确 定
+        </el-button>
       </div>
     </el-dialog>
   </div>
@@ -170,9 +466,6 @@ import axios from "axios";
 export default {
   data() {
     return {
-      updateForm: {
-
-      },
       dialogShowView: false,
       dialogUpdateForm: false,
       addForm: {
@@ -185,7 +478,6 @@ export default {
       formLabelWidth: '120px',
       imageUrl: '',
       dialogFormVisible: false,
-      dialogVisible: false,
       updateForm: {},
       rules: {
         title: [
@@ -207,7 +499,6 @@ export default {
           { required: true, message: '请输入确认密码', trigger: 'blur' }
         ]
       },
-      dialogVisible: false,
       id: '',
       formInline: {
         title: '',
@@ -241,7 +532,7 @@ export default {
             headers: {
               "Content-Type": "application/json",
             }
-          }).then(res => {
+          }).then(() => {
             this.$notify({
               title: '成功',
               message: '修改成功',
@@ -276,7 +567,7 @@ export default {
             headers: {
               "Content-Type": "application/json",
             }
-          }).then(res => {
+          }).then(() => {
             this.$notify({
               title: '成功',
               message: '添加成功',
@@ -335,7 +626,7 @@ export default {
 
     //删除物品
     handleDelete(row) {
-      axios.get("/main/deleteFound", { params: { id: row.id } }).then(res => {
+      axios.get("/main/deleteFound", { params: { id: row.id } }).then(() => {
         this.$notify({
           title: '成功',
           message: '删除成功',

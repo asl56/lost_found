@@ -1,57 +1,66 @@
 <!-- 数据总览 -->
 <template>
-    <div class="DataView">
-        <el-row :gutter="20">
-            <el-col :span="6">
-                <div>
-                    <el-statistic>
-                        <template slot="formatter">
-                            <span style="font-size: 16px;font-weight: bold;">用户留言</span>
-                            <dv-digital-flop :config="config" style="width:100px;height:50px;color: black;" />
-                        </template>
-                    </el-statistic>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div>
-                    <el-statistic>
-                        <template slot="formatter">
-                            
-                            <template>
-                                <span style="font-size: 16px;font-weight: bold;">今日新增留言</span>
-                            </template>
-                            <i class="el-icon-star-on" style="color:red" v-show="like"></i>
-                           <template>
-                             <dv-digital-flop :config="toDayConfig" style="width:100px;height:50px;color: black;" />
-                            
-                           </template>
-                           
-                        </template>
-                    </el-statistic>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div>
-                    <el-statistic>
-                        <template slot="formatter">
-                            <span style="font-size: 16px;font-weight: bold;">剩余丢失物品</span>
-                            <dv-digital-flop :config="LostConfig" style="width:100px;height:50px;color: black;" />
-                        </template>
-                    </el-statistic>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div>
-                    <el-statistic>
-                        <template slot="formatter">
-                            <span style="font-size: 16px;font-weight: bold;">剩余招领物品</span>
-                            <dv-digital-flop :config="FoundConfig" style="width:100px;height:50px;color: black;" />
-                        </template>
-                    </el-statistic>
-                </div>
-            </el-col>
-        </el-row>
-    </div>
+  <div class="DataView">
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <div>
+          <el-statistic>
+            <template slot="formatter">
+              <span style="font-size: 16px;font-weight: bold;">用户留言</span>
+              <dv-digital-flop
+                :config="config"
+                style="width:100px;height:50px;color: black;"
+              />
+            </template>
+          </el-statistic>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div>
+          <el-statistic>
+            <template slot="formatter">
+              <span style="font-size: 16px;font-weight: bold;">今日新增留言</span>
+              <i
+                v-show="like"
+                class="el-icon-star-on"
+                style="color:red"
+              />
+              <dv-digital-flop
+                :config="toDayConfig"
+                style="width:100px;height:50px;color: black;"
+              />
+            </template>
+          </el-statistic>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div>
+          <el-statistic>
+            <template slot="formatter">
+              <span style="font-size: 16px;font-weight: bold;">剩余丢失物品</span>
+              <dv-digital-flop
+                :config="LostConfig"
+                style="width:100px;height:50px;color: black;"
+              />
+            </template>
+          </el-statistic>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div>
+          <el-statistic>
+            <template slot="formatter">
+              <span style="font-size: 16px;font-weight: bold;">剩余招领物品</span>
+              <dv-digital-flop
+                :config="FoundConfig"
+                style="width:100px;height:50px;color: black;"
+              />
+            </template>
+          </el-statistic>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>

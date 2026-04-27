@@ -1,114 +1,242 @@
 <template>
-    <div class="MyContact">
-        <div style="margin-bottom: 20px;">
-            <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item style="font-weight: bold;">首页</el-breadcrumb-item>
-                <el-breadcrumb-item>我的</el-breadcrumb-item>
-                <el-breadcrumb-item>我的联系</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-
-        <div class="MyContact_box">
-            <div class="MyContact_Search">
-                <el-form :inline="true" :model="formInline" style="margin: 0px auto;">
-                    <el-form-item label="日期" style="margin-left: 20px;">
-                        <el-date-picker v-model="formInline.date" value-format="yyyy-MM-dd" type="date"
-                            placeholder="选择日期">
-                        </el-date-picker>
-                    </el-form-item>
-
-                    <el-form-item>
-                        <el-button type="primary" @click="handleClick">查询</el-button>
-                        <el-button type="info" @click="handleReset">重置</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-            <el-tabs v-model="activeName" @tab-click="handleClick" style="width: 95%;margin: 0 auto;">
-                <el-tab-pane label="失物留言" name="first">
-                    <div>
-                        <el-table :data="tableData" style="width: 90%;border-radius: 5px;margin: 20px auto;">
-                            <el-table-column prop="title" label="失物照片" width="150"
-                                style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-                                <template slot-scope="scope">
-                                    <el-image style="width: 100px; height: 100px" :src="scope.row.itemPhoto"
-                                        fit="cover"></el-image>
-                                </template>
-                            </el-table-column>
-                            <el-table-column prop="title" label="失物标题" width="170"
-                                style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-                            </el-table-column>
-                            <el-table-column prop="name" label="创建人" width="120">
-                            </el-table-column>
-                            <el-table-column prop="phone" label="创建人联系方式" width="150">
-                            </el-table-column>
-                            <el-table-column prop="status" label="当前状态" width="150">
-                            </el-table-column>
-                            <el-table-column prop="content" label="联系内容" width="150">
-                            </el-table-column>
-                            <el-table-column prop="contactTime" label="联系时间" width="150">
-                            </el-table-column>
-                            <el-table-column label="操作" fixed="right" width="150">
-                                <template slot-scope="scope">
-                                    <el-popconfirm confirm-button-text='确定' cancel-button-text='取消' icon="el-icon-info"
-                                        icon-color="red" title="确定要删除该条留言吗？" @confirm="handleDelete(scope.row)">
-                                        <el-link :underline="false" icon="el-icon-delete" type="danger"
-                                            slot="reference">删除</el-link>
-                                    </el-popconfirm>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                            :current-page="currentPage" :page-sizes="[5, 10, 15, 20]" :page-size="page.count"
-                            layout="total, sizes, prev, pager, next, jumper" :total="total" class="MyContact_page">
-                        </el-pagination>
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane label="招领留言" name="second">
-                    <div>
-                        <el-table :data="tableData" style="width: 90%;border-radius: 5px;margin: 20px auto;">
-                            <el-table-column prop="title" label="招领照片" width="150"
-                                style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-                                <template slot-scope="scope">
-                                    <el-image style="width: 100px; height: 100px" :src="scope.row.itemPhoto"
-                                        fit="cover"></el-image>
-                                </template>
-                            </el-table-column>
-                            <el-table-column prop="title" label="招领标题" width="170"
-                                style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-                            </el-table-column>
-                            <el-table-column prop="name" label="创建人" width="120">
-                            </el-table-column>
-                            <el-table-column prop="phone" label="创建人联系方式" width="150">
-                            </el-table-column>
-                            <el-table-column prop="status" label="当前状态" width="150">
-                            </el-table-column>
-                            <el-table-column prop="content" label="联系内容" width="150">
-                            </el-table-column>
-                            <el-table-column prop="contactTime" label="联系时间" width="150">
-                            </el-table-column>
-                            <el-table-column label="操作" fixed="right" width="150px">
-                                <template slot-scope="scope">
-                                    <el-popconfirm confirm-button-text='确定' cancel-button-text='取消' icon="el-icon-info"
-                                        icon-color="red" title="确定要删除该条留言吗？" @confirm="handleDelete(scope.row)">
-                                        <el-link :underline="false" icon="el-icon-delete" type="danger"
-                                            slot="reference">删除</el-link>
-                                    </el-popconfirm>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                            :current-page="currentPage" :page-sizes="[5, 10, 15, 20]" :page-size="page.count"
-                            layout="total, sizes, prev, pager, next, jumper" :total="total" class="MyContact_page">
-                        </el-pagination>
-                    </div>
-                </el-tab-pane>
-            </el-tabs>
-
-        </div>
-
-
-
+  <div class="MyContact">
+    <div style="margin-bottom: 20px;">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item style="font-weight: bold;">
+          首页
+        </el-breadcrumb-item>
+        <el-breadcrumb-item>我的</el-breadcrumb-item>
+        <el-breadcrumb-item>我的联系</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
+
+    <div class="MyContact_box">
+      <div class="MyContact_Search">
+        <el-form
+          :inline="true"
+          :model="formInline"
+          style="margin: 0px auto;"
+        >
+          <el-form-item
+            label="日期"
+            style="margin-left: 20px;"
+          >
+            <el-date-picker
+              v-model="formInline.date"
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            />
+          </el-form-item>
+
+          <el-form-item>
+            <el-button
+              type="primary"
+              @click="handleClick"
+            >
+              查询
+            </el-button>
+            <el-button
+              type="info"
+              @click="handleReset"
+            >
+              重置
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <el-tabs
+        v-model="activeName"
+        style="width: 95%;margin: 0 auto;"
+        @tab-click="handleClick"
+      >
+        <el-tab-pane
+          label="失物留言"
+          name="first"
+        >
+          <div>
+            <el-table
+              :data="tableData"
+              style="width: 90%;border-radius: 5px;margin: 20px auto;"
+            >
+              <el-table-column
+                prop="title"
+                label="失物照片"
+                width="150"
+                style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+              >
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 100px; height: 100px"
+                    :src="scope.row.itemPhoto"
+                    fit="cover"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="title"
+                label="失物标题"
+                width="170"
+                style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+              />
+              <el-table-column
+                prop="name"
+                label="创建人"
+                width="120"
+              />
+              <el-table-column
+                prop="phone"
+                label="创建人联系方式"
+                width="150"
+              />
+              <el-table-column
+                prop="status"
+                label="当前状态"
+                width="150"
+              />
+              <el-table-column
+                prop="content"
+                label="联系内容"
+                width="150"
+              />
+              <el-table-column
+                prop="contactTime"
+                label="联系时间"
+                width="150"
+              />
+              <el-table-column
+                label="操作"
+                fixed="right"
+                width="150"
+              >
+                <template slot-scope="scope">
+                  <el-popconfirm
+                    confirm-button-text="确定"
+                    cancel-button-text="取消"
+                    icon="el-icon-info"
+                    icon-color="red"
+                    title="确定要删除该条留言吗？"
+                    @confirm="handleDelete(scope.row)"
+                  >
+                    <el-link
+                      slot="reference"
+                      :underline="false"
+                      icon="el-icon-delete"
+                      type="danger"
+                    >
+                      删除
+                    </el-link>
+                  </el-popconfirm>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination
+              :current-page="currentPage"
+              :page-sizes="[5, 10, 15, 20]"
+              :page-size="page.count"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+              class="MyContact_page"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane
+          label="招领留言"
+          name="second"
+        >
+          <div>
+            <el-table
+              :data="tableData"
+              style="width: 90%;border-radius: 5px;margin: 20px auto;"
+            >
+              <el-table-column
+                prop="title"
+                label="招领照片"
+                width="150"
+                style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+              >
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 100px; height: 100px"
+                    :src="scope.row.itemPhoto"
+                    fit="cover"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="title"
+                label="招领标题"
+                width="170"
+                style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+              />
+              <el-table-column
+                prop="name"
+                label="创建人"
+                width="120"
+              />
+              <el-table-column
+                prop="phone"
+                label="创建人联系方式"
+                width="150"
+              />
+              <el-table-column
+                prop="status"
+                label="当前状态"
+                width="150"
+              />
+              <el-table-column
+                prop="content"
+                label="联系内容"
+                width="150"
+              />
+              <el-table-column
+                prop="contactTime"
+                label="联系时间"
+                width="150"
+              />
+              <el-table-column
+                label="操作"
+                fixed="right"
+                width="150px"
+              >
+                <template slot-scope="scope">
+                  <el-popconfirm
+                    confirm-button-text="确定"
+                    cancel-button-text="取消"
+                    icon="el-icon-info"
+                    icon-color="red"
+                    title="确定要删除该条留言吗？"
+                    @confirm="handleDelete(scope.row)"
+                  >
+                    <el-link
+                      slot="reference"
+                      :underline="false"
+                      icon="el-icon-delete"
+                      type="danger"
+                    >
+                      删除
+                    </el-link>
+                  </el-popconfirm>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination
+              :current-page="currentPage"
+              :page-sizes="[5, 10, 15, 20]"
+              :page-size="page.count"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+              class="MyContact_page"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -134,7 +262,6 @@ export default {
                 ],
 
             },
-            dialogVisible: false,
             id: '',
             formInline: {
                 title: '',
@@ -197,7 +324,7 @@ export default {
 
         //删除物品
         handleDelete(row) {
-            axios.get("/main/deleteContact", { params: { id: row.id } }).then(res => {
+            axios.get("/main/deleteContact", { params: { id: row.id } }).then(() => {
                 this.$notify({
                     title: '成功',
                     message: '删除成功',
